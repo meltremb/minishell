@@ -6,7 +6,7 @@
 /*   By: meltremb <meltremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 13:21:07 by meltremb          #+#    #+#             */
-/*   Updated: 2023/06/05 12:51:29 by meltremb         ###   ########.fr       */
+/*   Updated: 2023/06/05 13:16:04 by meltremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static char	*call_prompt(void)
 {
 	char	*line;
 
-	line = readline("");
+	line = readline("minishell>");
 	while (line && line[0] == '\0')
-		line = readline("");
+		line = readline("minishell>");
 	if (line)
 		add_history(line);
 	return (line);

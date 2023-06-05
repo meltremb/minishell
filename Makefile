@@ -6,7 +6,7 @@
 #    By: meltremb <meltremb@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/31 13:29:15 by meltremb          #+#    #+#              #
-#    Updated: 2023/06/05 12:45:02 by meltremb         ###   ########.fr        #
+#    Updated: 2023/06/05 13:13:48 by meltremb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ RM		=	rm -rf
 # Libraries
 LDIR	=	include/reworked-libft/
 LIBFT	=	libft.a
-RDIR	=	include/readline/
+RDIR	=	include/readline-8.2/
 RLIB	=	libreadline.a
 HLIB	=	libhistory.a
 
@@ -61,7 +61,7 @@ all: submodule $(NAME)
 
 # Generates output file
 $(NAME): $(LDIR)$(LIBFT) $(RDIR)$(RLIB) $(RDIR)$(HLIB) $(OBJS)
-	$(HIDE)$(CC) $(CFLAGS) $^ -o $@
+	$(HIDE)$(CC) $(CFLAGS) $^ -lcurses -o $@
 
 $(OBJS): $(OBJDIR)%.o : $(SRCDIR)%.c
 		-@ $(HIDE)mkdir -p $(OBJDIR)
@@ -72,7 +72,7 @@ $(LDIR)$(LIBFT):
 	-@ $(MAKE) -C $(LDIR)
 
 $(RDIR)$(RLIB):
-	cd include/readline; ./configure && make
+	cd include/readline-8.2; ./configure && make
 
 valgrind: all
 	$(HIDE)valgrind \
