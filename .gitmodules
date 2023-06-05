@@ -1,6 +1,6 @@
 [submodule "reworked-libft"]
-	path = reworked-libft
+	path = include/reworked-libft
 	url = git@github.com:meltremb/reworked-libft.git
 [submodule "readline"]
-	path = readline
+	path = include/readline
 	url = git://git.savannah.gnu.org/readline.git

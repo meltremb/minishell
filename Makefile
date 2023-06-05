@@ -6,7 +6,7 @@
 #    By: meltremb <meltremb@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/31 13:29:15 by meltremb          #+#    #+#              #
-#    Updated: 2023/05/31 14:10:10 by meltremb         ###   ########.fr        #
+#    Updated: 2023/06/05 12:45:02 by meltremb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ DEFAULT_GOAL: all
 # Hide calls
 export VERBOSE	=	TRUE
 ifeq ($(VERBOSE),TRUE)
-	HIDE =
+	HIDE = 
 else
 	HIDE = @
 endif
@@ -38,16 +38,20 @@ CFLAGS	=	-Wall -Werror -Wextra
 RM		=	rm -rf
 
 # Libraries
-LDIR	=	reworked-libft/
+LDIR	=	include/reworked-libft/
 LIBFT	=	libft.a
+RDIR	=	include/readline/
+RLIB	=	libreadline.a
+HLIB	=	libhistory.a
 
 # Dir and file names
 NAME	=	minishell
 SRCDIR	=	src/
 OBJDIR	=	objs/
 SRCS	=	src/minishell.c \
-OBJS	=	$(patsubst $(SRCDIR)%.c,$(OBJDIR)%.o,$(SRCS))
+			src/prompt.c
 
+OBJS	=	$(patsubst $(SRCDIR)%.c,$(OBJDIR)%.o,$(SRCS))
 
 #------------------------------------------------------------------------------#
 #                                 TARGETS                                      #
@@ -56,8 +60,8 @@ OBJS	=	$(patsubst $(SRCDIR)%.c,$(OBJDIR)%.o,$(SRCS))
 all: submodule $(NAME)
 
 # Generates output file
-$(NAME): $(OBJS) $(LDIR)$(LIBFT)
-	$(HIDE)$(CC) $(CFLAGS) $(LDIR)$(LIBFT) -o $@
+$(NAME): $(LDIR)$(LIBFT) $(RDIR)$(RLIB) $(RDIR)$(HLIB) $(OBJS)
+	$(HIDE)$(CC) $(CFLAGS) $^ -o $@
 
 $(OBJS): $(OBJDIR)%.o : $(SRCDIR)%.c
 		-@ $(HIDE)mkdir -p $(OBJDIR)
@@ -66,6 +70,24 @@ $(OBJS): $(OBJDIR)%.o : $(SRCDIR)%.c
 # Generates libft
 $(LDIR)$(LIBFT):
 	-@ $(MAKE) -C $(LDIR)
+
+$(RDIR)$(RLIB):
+	cd include/readline; ./configure && make
+
+valgrind: all
+	$(HIDE)valgrind \
+	--leak-check=full \
+	--show-leak-kinds=all \
+	--show-reachable=yes \
+	--track-fds=yes \
+	--error-limit=no \
+	--suppressions=./config/minishell.supp
+	./minishell
+
+norminette:
+	$(HIDE)norminette include/
+	$(HIDE)norminette src/
+	$(HIDE)norminette reworked-libft/
 
 # updates libft submodule
 submodule:
