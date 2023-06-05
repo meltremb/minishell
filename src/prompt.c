@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: meltremb <meltremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/31 13:21:07 by meltremb          #+#    #+#             */
-/*   Updated: 2023/06/05 11:04:08 by meltremb         ###   ########.fr       */
+/*   Created: 2023/06/05 10:56:35 by meltremb          #+#    #+#             */
+/*   Updated: 2023/06/05 10:58:37 by meltremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include"../include/minishell.h"
 
-int	main(void)
+static char *prompt(void)
 {
-	printf("lol");
+	char    *line;
+
+    line = readline("minishell>");
+    while (line && line[0] == '\0')
+        line = readline("minishell>");
+    if (line)
+        add_history(line);
+    return (line);
 }
