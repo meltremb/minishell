@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   syntaxer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: meltremb <meltremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/31 13:21:07 by meltremb          #+#    #+#             */
-/*   Updated: 2023/06/06 13:55:29 by meltremb         ###   ########.fr       */
+/*   Created: 2023/06/05 10:56:35 by meltremb          #+#    #+#             */
+/*   Updated: 2023/06/06 14:51:15 by meltremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include"../include/minishell.h"
 
-static char	*prompt(void)
+void	init(void)
 {
-	char	*line;
+	t_data	*d;
 
-	line = readline("minishell>");
-	while (line && line[0] == '\0')
-		line = readline("minishell>");
-	if (line)
-		add_history(line);
-	return (line);
+	d = get_data();
+	d->tokens = ft_calloc(1, sizeof(t_tokens));
 }
 
-int	main(void)
+int	make_list(char *line)
 {
-	char	*line;
+	char	**args;
+	t_data	*d;
+	int		k;
 
-	line = prompt();
-	init();
-	make_list(line);
+	d = get_data();
+	k = -1;
+	args = splitter(line);
+	while (args[++k])
+		dbl_lst_add_back(d->tokens, args[k]);
+	ft_free_array((void ***) &args);
+	return (1);
 }

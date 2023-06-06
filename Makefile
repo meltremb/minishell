@@ -6,7 +6,7 @@
 #    By: meltremb <meltremb@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/31 13:29:15 by meltremb          #+#    #+#              #
-#    Updated: 2023/06/05 13:13:48 by meltremb         ###   ########.fr        #
+#    Updated: 2023/06/06 14:48:27 by meltremb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ DEFAULT_GOAL: all
 # Hide calls
 export VERBOSE	=	TRUE
 ifeq ($(VERBOSE),TRUE)
-	HIDE = 
+	HIDE = @
 else
 	HIDE = @
 endif
@@ -34,7 +34,7 @@ endif
 
 # Compiler and flags
 CC		=	gcc
-CFLAGS	=	-Wall -Werror -Wextra
+CFLAGS	=	-Wall -Werror -Wextra -fsanitize=address
 RM		=	rm -rf
 
 # Libraries
@@ -43,13 +43,17 @@ LIBFT	=	libft.a
 RDIR	=	include/readline-8.2/
 RLIB	=	libreadline.a
 HLIB	=	libhistory.a
+DBLDIR	=	include/dbl_lists/
+DBLLIB	=	dbl_lists.a
 
 # Dir and file names
 NAME	=	minishell
 SRCDIR	=	src/
 OBJDIR	=	objs/
 SRCS	=	src/minishell.c \
-			src/prompt.c
+			src/syntaxer.c	\
+			src/singleton.c \
+			src/extras.c
 
 OBJS	=	$(patsubst $(SRCDIR)%.c,$(OBJDIR)%.o,$(SRCS))
 
@@ -60,19 +64,24 @@ OBJS	=	$(patsubst $(SRCDIR)%.c,$(OBJDIR)%.o,$(SRCS))
 all: submodule $(NAME)
 
 # Generates output file
-$(NAME): $(LDIR)$(LIBFT) $(RDIR)$(RLIB) $(RDIR)$(HLIB) $(OBJS)
+$(NAME): $(LDIR)$(LIBFT) $(DBLDIR)$(DBLLIB) $(RDIR)$(RLIB) $(RDIR)$(HLIB) $(OBJS)
 	$(HIDE)$(CC) $(CFLAGS) $^ -lcurses -o $@
 
 $(OBJS): $(OBJDIR)%.o : $(SRCDIR)%.c
-		-@ $(HIDE)mkdir -p $(OBJDIR)
-		-@ $(HIDE)$(CC) $(CFLAGS) -c $< -o $@
+		$(HIDE)mkdir -p $(OBJDIR)
+		$(HIDE)$(CC) $(CFLAGS) -c $< -o $@
 
 # Generates libft
 $(LDIR)$(LIBFT):
 	-@ $(MAKE) -C $(LDIR)
 
+# Generates readline
 $(RDIR)$(RLIB):
 	cd include/readline-8.2; ./configure && make
+
+# Generates dbl_lists
+$(DBLDIR)$(DBLLIB):
+	-@ $(MAKE) -C $(DBLDIR)
 
 valgrind: all
 	$(HIDE)valgrind \
@@ -101,6 +110,7 @@ clean:
 # Removes objects and executables
 fclean: clean
 	$(HIDE)$(RM) $(NAME)
+	$(HIDE)$(RM) $(DBLDIR)$(DBLLIB)
 
 # Removes objects and executables and remakes
 re: fclean all
