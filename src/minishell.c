@@ -6,7 +6,7 @@
 /*   By: meltremb <meltremb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 13:21:07 by meltremb          #+#    #+#             */
-/*   Updated: 2023/06/06 13:55:29 by meltremb         ###   ########.fr       */
+/*   Updated: 2023/06/06 14:53:48 by meltremb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,5 @@ int	main(void)
 	line = prompt();
 	init();
 	make_list(line);
+	return (0);
 }

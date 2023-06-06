@@ -6,7 +6,7 @@
 #    By: meltremb <meltremb@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/31 13:29:15 by meltremb          #+#    #+#              #
-#    Updated: 2023/06/06 14:48:27 by meltremb         ###   ########.fr        #
+#    Updated: 2023/06/06 14:54:32 by meltremb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,6 @@ SRCDIR	=	src/
 OBJDIR	=	objs/
 SRCS	=	src/minishell.c \
 			src/syntaxer.c	\
-			src/singleton.c \
 			src/extras.c
 
 OBJS	=	$(patsubst $(SRCDIR)%.c,$(OBJDIR)%.o,$(SRCS))
